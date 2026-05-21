@@ -28,19 +28,31 @@ app.get('/', (req, res) => {
 
 // POST ROUTE
 app.post('/user', (req, res) => {
-
     const { name, email } = req.body;
+    console.log(req.body);
 
-    // Error Handling
+    // check missing fields
     if (!name || !email) {
-
         return res.status(400).json({
-            error: 'Name and email are required'
+            error: "Missing fields"
+        });
+    }
+
+    // name validation 
+    if (!isNaN(name)) {
+        return res.status(400).json({
+            error: "Name cannot be a number"
+        });
+    }
+
+    // email validation
+    if (!email.includes("@") || !email.includes(".")) {
+        return res.status(400).json({
+            error: "Invalid email format"
         });
     }
 
     res.send(`Hello ${name}`);
-
 });
 
 
